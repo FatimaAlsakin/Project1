@@ -1,0 +1,19 @@
+nav{
+    display: flex;
+}
+.rows {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+
+.sqr {
+    width:1.6cm;
+  aspect-ratio: 1/1;
+  border: 3px solid black;
+  font-size: 64px;
+  text-align: center;
+  margin: 5px 2px;
+}
+
+

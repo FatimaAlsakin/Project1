@@ -1,12 +1,14 @@
 nav{
     display: flex;
 }
-.rows {
+.board {
   display: flex;
-  flex-wrap: wrap;
+flex-direction: column;
 }
 
-
+.board > div {
+  display: flex;        
+}
 .sqr {
     width:1.6cm;
   aspect-ratio: 1/1;

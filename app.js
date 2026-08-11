@@ -66,9 +66,10 @@ function key (event){
 function backSpace(){
     console.log('backspace')
     if(currentCol > 0 ){
+        currentCol--
         guess[currentCol] = ''
         board[currentRow][currentCol] = ''
-        currentCol--
+        
     }
     console.log(guess)
     console.log(board)

@@ -1,4 +1,5 @@
-import { WORDS } from "./words";
+import {WORDS} from "./words.js";
+console.log(WORDS)
 /*-------------------------------- Constants --------------------------------*/
 const numberOfGuesses = 6
 /*---------------------------- Variables (state) ----------------------------*/
@@ -28,13 +29,18 @@ function init (){
             ['','','','',''],
             ['','','','','']]
     currentRow = 0
-    currentCol =0 
-    word = 'hello'
+    currentCol =0   
     guess = ['','','','','']
     remainingGuesses = numberOfGuesses
     gameOver = false
 
+    chooseWord()
     updateBoard()
+}
+
+function chooseWord (){
+    word = WORDS[Math.floor(Math.random() * WORDS.length)]
+    console.log(word)
 }
 
 function key (event){

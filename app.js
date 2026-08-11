@@ -85,13 +85,8 @@ function enter(){
             gameOver = true
         }
         else{
-            console.log('Not the right word')
-            if(currentRow < 5){
-                currentCol = 0 
-                currentRow ++
-                console.log(currentRow)
-            }
-            else if (currentRow === 5 ){
+            isValidWord()
+            if (currentRow === 5 ){
                 console.log('Game Over ')
                 gameOver= true
             }
@@ -99,6 +94,18 @@ function enter(){
     }
     else{
         alert("Not A 5 letter word")
+    }
+}
+
+function isValidWord(){
+    if(WORDS.includes(guess.join(''))){
+        console.log('Not the right word')
+        currentCol = 0 
+        currentRow ++
+    }
+    else{
+        console.log('Not a valid word')
+
     }
 }
 

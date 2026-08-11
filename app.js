@@ -19,6 +19,7 @@ const kyebardEl = document.querySelectorAll('.key')
 console.log(kyebardEl)
 const howToPlayEl = document.querySelector('#howToPlay')
 console.log(howToPlayEl)
+const messageEl = document.querySelector('#message')
 
 /*-------------------------------- Functions --------------------------------*/
 function init (){
@@ -82,7 +83,7 @@ function enter(){
 
     if(currentCol === 5){
         if(guess.join('') === word){
-            alert('You guesed the right word')
+            messageEl.textContent= 'You guesed the right word'
             gameOver = true
         }
         else{
@@ -94,18 +95,18 @@ function enter(){
         }
     }
     else{
-        alert("Not A 5 letter word")
+        messageEl.textContent ="Not A 5 letter word"
     }
 }
 
 function isValidWord(){
     if(WORDS.includes(guess.join(''))){
-        console.log('Not the right word')
+        messageEl.textContent= 'Not the right word'
         currentCol = 0 
         currentRow ++
     }
     else{
-        console.log('Not a valid word')
+        messageEl.textContent = 'Not a valid word'
 
     }
 }

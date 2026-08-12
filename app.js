@@ -185,6 +185,29 @@ function changeKeyColor (statusArr){
     }
 }
 
+document.addEventListener('keydown', handlePhysicalKey)
+
+function handlePhysicalKey(event){
+    if (gameOver) return
+
+    const key = event.key.toLowerCase()
+
+    if (key === 'backspace'){
+        backSpace()
+    }
+    else if (key === 'enter'){
+        enter()
+    }
+    else if (key.length === 1 && key >= 'a' && key <= 'z'){
+        letter = key
+        addLetter()
+    }
+    else {
+        return // ignore shift, arrows, etc — don't call updateBoard for nothing
+    }
+    updateBoard()
+}
+
 /*----------------------------- Event Listeners -----------------------------*/
 init()
 

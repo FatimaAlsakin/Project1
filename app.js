@@ -84,6 +84,7 @@ function enter(){
     if(currentCol === 5){
         if(guess.join('') === word){
             messageEl.textContent= 'You guesed the right word'
+            isValidWord()
             gameOver = true
         }
         else{
@@ -97,12 +98,14 @@ function enter(){
     else{
         messageEl.textContent ="Not A 5 letter word"
     }
+
 }
 
 function isValidWord(){
     if(WORDS.includes(guess.join(''))){
         messageEl.textContent= 'Not the right word'
         currentCol = 0 
+        letterStatus()
         currentRow ++
     }
     else{
@@ -118,8 +121,6 @@ function addLetter(){
         guess[currentCol] = letter
         currentCol++
     }
-    console.log(guess)
-    console.log(board)
 }
 
 function updateBoard (){
@@ -133,7 +134,42 @@ function updateBoard (){
 
 }
 
+function letterStatus (){
+    let temp = word.split('')
+    let statusArr = ['','','','','']
+    let wordCopy = [...temp]
 
+    for(let i=0 ; i<temp.length; i++){
+        if(guess[i] === temp[i]){
+            statusArr[i] = "green"
+            wordCopy[i] = ''
+        }
+    }
+    for (let i=0 ; i<temp.length; i++){
+        if(wordCopy.includes(guess[i]) && statusArr[i] !== 'green'){
+            statusArr[i] = 'yellow'
+            wordCopy[wordCopy.indexOf(guess[i])] = ''
+        }
+        else if (statusArr[i] !== 'green'){
+            statusArr[i] = 'grey'
+        }
+    }
+
+    changeTileColor(statusArr)
+}
+
+function changeTileColor (statusArr){
+    console.log(statusArr)
+    for(let i=0; i<guess.length; i++){
+        let index = currentRow * 5 + i
+        if(statusArr[i] === 'green')
+            boardEl[index].classList.add('green')
+        else if(statusArr[i] === 'yellow')
+            boardEl[index].classList.add('yellow')
+        else if(statusArr[i] === 'grey')
+            boardEl[index].classList.add('grey')
+    }
+}
 
 /*----------------------------- Event Listeners -----------------------------*/
 init()

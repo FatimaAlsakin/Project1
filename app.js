@@ -155,7 +155,9 @@ function letterStatus (){
         }
     }
 
+
     changeTileColor(statusArr)
+    changeKeyColor(statusArr)
 }
 
 function changeTileColor (statusArr){
@@ -168,6 +170,18 @@ function changeTileColor (statusArr){
             boardEl[index].classList.add('yellow')
         else if(statusArr[i] === 'grey')
             boardEl[index].classList.add('grey')
+    }
+}
+
+function changeKeyColor (statusArr){
+    for(let i=0; i<guess.length; i++){
+        let keyEl = document.getElementById(guess[i])
+        if(statusArr[i] === 'green')
+            keyEl.classList.add('green')
+        else if(statusArr[i] === 'yellow')
+            keyEl.classList.add('yellow')
+        else if(statusArr[i] === 'grey')
+            keyEl.classList.add('grey')
     }
 }
 

@@ -33,3 +33,18 @@ flex-direction: column;
   background-color: grey;
   color: white;
 }
+
+.key.yellow {
+  background-color: yellow;
+  color: white;
+}
+
+.key.grey {
+  background-color: grey;
+  color: white;
+}
+
+.key.green {
+  background-color: green;
+  color: white;
+}

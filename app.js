@@ -208,6 +208,24 @@ function handlePhysicalKey(event){
     updateBoard()
 }
 
+const howToPlayPopup = new Popup({
+    id: "my-popup",
+    title: "<span style='font-weight: bold;' >How to Play</span>",
+    content: `
+        Guess the Wordle in 6 tries.
+        Each guess must be a valid 5-letter word.
+        The color of the tiles will change to show how close your guess was to the word.
+        <span style='font-weight: bold;'>Examples:</span>
+        <img src="./img/pic1.png">
+        <span style="font-weight: bold;">W</span> is in the word and in the correct spot.
+        <img src="./img/pic2.png">
+        <span style="font-weight: bold;">I</span> is in the word but in the wrong spot.
+        <img src="./img/pic3.png">
+        <span style="font-weight: bold;">U</span> is not in the word in any spot.
+        `
+});
+console.log(howToPlayPopup)
+
 /*----------------------------- Event Listeners -----------------------------*/
 init()
 
@@ -215,3 +233,6 @@ for (let one of kyebardEl){
     one.addEventListener('click', key )
 }
 
+howToPlayEl.addEventListener('click', () => {
+    howToPlayPopup.show()
+})

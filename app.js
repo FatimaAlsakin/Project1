@@ -39,6 +39,7 @@ let letter
 let board
 let gameOver
 let count 
+let youLossPopUp
 /*------------------------ Cached Element References ------------------------*/
 const boardEl = document.querySelectorAll('.sqr')
 console.log(boardEl)
@@ -88,10 +89,10 @@ function chooseWord (){
 }
 
 function key (event){
-    if(guess[currentCol] !== ''){
-        currentCol +=1
-        return
-    }
+    // if( currentCol < 5 && guess[currentCol] !== ''){
+    //     currentCol++
+    //     return
+    // }
 
     if (gameOver) return
     letter = event.target.id
@@ -150,7 +151,7 @@ function enter(){
 
 function youloss(){
     let w = word
-    let youLossPopUp = new Popup({
+    youLossPopUp = new Popup({
     id: "my-popup3",
     title: "<span style='font-weight: bold;' >Game Over! You Lost!😔</span>",
     content: `The correct word was: <span style='font-weight: bold;'>${w}</span><br><br><button id="playAgain" class="btn btn-primary">Play Again</button>`,
@@ -166,6 +167,7 @@ function isValidWord(){
         currentCol = 0 
         letterStatus()
         currentRow ++
+        guess = ['','','','','']
     }
     else{
         messageEl.textContent = 'Not a valid word'
@@ -175,6 +177,9 @@ function isValidWord(){
 
 function addLetter(){
     
+    while (currentCol < 5 && guess[currentCol] !== '') {
+        currentCol++
+    }
     if (currentCol< 5 ){
         board[currentRow][currentCol] = letter.toUpperCase()
         guess[currentCol] = letter
@@ -263,6 +268,7 @@ function handlePhysicalKey(event){
     else {
         return 
     }
+
     updateBoard()
 }
 
@@ -284,6 +290,8 @@ function hint(){
             boardEl[index].classList.add('green')
             boardEl[index].textContent = l.toUpperCase()
             board[currentRow][w.indexOf(l)] = l.toUpperCase()
+            guess[w.indexOf(l)] = l
+
             count++
         }
         else{ 
@@ -298,6 +306,8 @@ function hint(){
     else{
         messageEl.textContent = 'You have already used your hint'
     }
+
+    updateBoard()
 
     
    

@@ -38,7 +38,7 @@ let currentCol
 let letter 
 let board
 let gameOver
-
+let count 
 /*------------------------ Cached Element References ------------------------*/
 const boardEl = document.querySelectorAll('.sqr')
 console.log(boardEl)
@@ -50,6 +50,7 @@ const messageEl = document.querySelector('#message')
 const playAgainEl = document.querySelector('#playAgain')
 const winPopUpEl = document.querySelector('#my-popup2')
 const lossPopUpEl = document.querySelector('#my-popup3')
+const hintEl = document.querySelector('#hint')
 
 /*-------------------------------- Functions --------------------------------*/
 function init (){
@@ -65,6 +66,7 @@ function init (){
     remainingGuesses = numberOfGuesses
     gameOver = false
     messageEl.textContent = ''
+    count = 0
 
     boardEl.forEach((cell) => {
         cell.textContent = ''
@@ -86,6 +88,10 @@ function chooseWord (){
 }
 
 function key (event){
+    if(guess[currentCol] !== ''){
+        currentCol +=1
+        return
+    }
 
     if (gameOver) return
     letter = event.target.id
@@ -266,6 +272,37 @@ function playAgain(){
     init()
 }
 
+function hint(){
+
+    let w = word.split('')
+    let l = w[Math.floor(Math.random() * w.length)]
+    console.log(l)
+    if (count === 0){
+        if(guess.indexOf(l) === w.indexOf(l)){
+            l = w[Math.floor(Math.random() * w.length)]
+            let index = currentRow * 5 + w.indexOf(l)
+            boardEl[index].classList.add('green')
+            boardEl[index].textContent = l.toUpperCase()
+            board[currentRow][w.indexOf(l)] = l.toUpperCase()
+            count++
+        }
+        else{ 
+            let index = currentRow * 5 + w.indexOf(l)
+            boardEl[index].classList.add('green')
+            boardEl[index].textContent = l.toUpperCase()
+            board[currentRow][w.indexOf(l)] = l.toUpperCase()
+            guess[w.indexOf(l)] = l
+            count++
+        }
+    }
+    else{
+        messageEl.textContent = 'You have already used your hint'
+    }
+
+    
+   
+}
+
 /*----------------------------- Event Listeners -----------------------------*/
 init()
 
@@ -279,10 +316,11 @@ howToPlayEl.addEventListener('click', () => {
 
 document.addEventListener('keydown', handlePhysicalKey)
 
-// playAgainEl.addEventListener('click', playAgain) 
 document.addEventListener('click', (event) => {
     if (event.target.id === 'playAgain'){
         playAgain()
     }
 })
+
+hintEl.addEventListener('click',hint)
 

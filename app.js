@@ -2,6 +2,33 @@ import {WORDS} from "./words.js";
 console.log(WORDS)
 /*-------------------------------- Constants --------------------------------*/
 const numberOfGuesses = 6
+const howToPlayPopup = new Popup({
+    id: "my-popup",
+    title: "<span style='font-weight: bold;' >How to Play</span>",
+    content: `
+        Guess the Wordle in 6 tries.
+        Each guess must be a valid 5-letter word.
+        The color of the tiles will change to show how close your guess was to the word.
+        <span style='font-weight: bold;'>Examples:</span>
+        <img src="./img/pic1.png">
+        <span style="font-weight: bold;">W</span> is in the word and in the correct spot.
+        <img src="./img/pic2.png">
+        <span style="font-weight: bold;">I</span> is in the word but in the wrong spot.
+        <img src="./img/pic3.png">
+        <span style="font-weight: bold;">U</span> is not in the word in any spot.
+        `
+});
+
+const youWinPopUp = new Popup({
+    id: "my-popup2",
+    title: "<span style='font-weight: bold;' >Congratulations! You Win!🎉</span>",
+    content: `<button id="playAgain" class="btn btn-primary">Play Again</button>`,
+});
+
+
+
+
+
 /*---------------------------- Variables (state) ----------------------------*/
 let remainingGuesses 
 let word
@@ -20,6 +47,9 @@ console.log(kyebardEl)
 const howToPlayEl = document.querySelector('#howToPlay')
 console.log(howToPlayEl)
 const messageEl = document.querySelector('#message')
+const playAgainEl = document.querySelector('#playAgain')
+const winPopUpEl = document.querySelector('#my-popup2')
+const lossPopUpEl = document.querySelector('#my-popup3')
 
 /*-------------------------------- Functions --------------------------------*/
 function init (){
@@ -34,6 +64,17 @@ function init (){
     guess = ['','','','','']
     remainingGuesses = numberOfGuesses
     gameOver = false
+    messageEl.textContent = ''
+
+    boardEl.forEach((cell) => {
+        cell.textContent = ''
+        cell.classList.remove('green','yellow','grey')
+    })
+
+    kyebardEl.forEach((key) => {
+        key.classList.remove('green','yellow','grey')
+    })
+
 
     chooseWord()
     updateBoard()
@@ -47,8 +88,6 @@ function chooseWord (){
 function key (event){
 
     if (gameOver) return
-
-    console.log(event.target)
     letter = event.target.id
     console.log(letter)
 
@@ -60,7 +99,8 @@ function key (event){
 
     }
     else addLetter()
-
+    
+    messageEl.textContent = ''
     updateBoard()
 }
 
@@ -72,8 +112,8 @@ function backSpace(){
         board[currentRow][currentCol] = ''
         
     }
-    console.log(guess)
-    console.log(board)
+
+    messageEl.textContent = ''
     updateBoard()
     
 }
@@ -83,15 +123,16 @@ function enter(){
 
     if(currentCol === 5){
         if(guess.join('') === word){
-            messageEl.textContent= 'You guesed the right word'
-            isValidWord()
+            letterStatus()
+            youWinPopUp.show()
             gameOver = true
         }
         else{
             isValidWord()
-            if (currentRow === 5 ){
-                console.log('Game Over ')
+            if (currentRow === 6 ){
+                youloss()
                 gameOver= true
+                return
             }
         }
     }
@@ -100,6 +141,18 @@ function enter(){
     }
 
 }
+
+function youloss(){
+    let w = word
+    let youLossPopUp = new Popup({
+    id: "my-popup3",
+    title: "<span style='font-weight: bold;' >Game Over! You Lost!😔</span>",
+    content: `The correct word was: <span style='font-weight: bold;'>${w}</span><br><br><button id="playAgain" class="btn btn-primary">Play Again</button>`,
+    });
+
+    youLossPopUp.show()
+}
+
 
 function isValidWord(){
     if(WORDS.includes(guess.join(''))){
@@ -117,7 +170,7 @@ function isValidWord(){
 function addLetter(){
     
     if (currentCol< 5 ){
-       board[currentRow][currentCol] = letter
+        board[currentRow][currentCol] = letter.toUpperCase()
         guess[currentCol] = letter
         currentCol++
     }
@@ -185,7 +238,6 @@ function changeKeyColor (statusArr){
     }
 }
 
-document.addEventListener('keydown', handlePhysicalKey)
 
 function handlePhysicalKey(event){
     if (gameOver) return
@@ -203,28 +255,16 @@ function handlePhysicalKey(event){
         addLetter()
     }
     else {
-        return // ignore shift, arrows, etc — don't call updateBoard for nothing
+        return 
     }
     updateBoard()
 }
 
-const howToPlayPopup = new Popup({
-    id: "my-popup",
-    title: "<span style='font-weight: bold;' >How to Play</span>",
-    content: `
-        Guess the Wordle in 6 tries.
-        Each guess must be a valid 5-letter word.
-        The color of the tiles will change to show how close your guess was to the word.
-        <span style='font-weight: bold;'>Examples:</span>
-        <img src="./img/pic1.png">
-        <span style="font-weight: bold;">W</span> is in the word and in the correct spot.
-        <img src="./img/pic2.png">
-        <span style="font-weight: bold;">I</span> is in the word but in the wrong spot.
-        <img src="./img/pic3.png">
-        <span style="font-weight: bold;">U</span> is not in the word in any spot.
-        `
-});
-console.log(howToPlayPopup)
+function playAgain(){
+    youWinPopUp.hide()
+    youLossPopUp.hide()
+    init()
+}
 
 /*----------------------------- Event Listeners -----------------------------*/
 init()
@@ -236,3 +276,13 @@ for (let one of kyebardEl){
 howToPlayEl.addEventListener('click', () => {
     howToPlayPopup.show()
 })
+
+document.addEventListener('keydown', handlePhysicalKey)
+
+// playAgainEl.addEventListener('click', playAgain) 
+document.addEventListener('click', (event) => {
+    if (event.target.id === 'playAgain'){
+        playAgain()
+    }
+})
+
